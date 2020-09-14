@@ -1,0 +1,44 @@
+
+spark-shell --conf spark.ui.port=4140  --packages com.databricks:spark-csv_2.11:1.5.0
+
+val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+
+val df = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferSchema","true").option("delimiter", "\t").load("/user/ilaria.taglialatelascafati_gma/bankProject.txt")
+df.show()
+
+val tot_count = df.count().toDouble
+val success = df.filter($"y" ==="yes").count()
+val marketing_success_rate = success/tot_count
+
+
+val failure = df.filter($"y" ==="no").count()
+val marketing_failure_rate = failure/tot_count
+     
+
+df.select(max($"age"), min($"age") , mean($"age")).show
+   
+
+df.select(max($"balance"), min($"balance") , mean($"balance")).show
+
+df.registerTempTable("banking")
+sqlContext.sql("select avg(balance), percentile(balance, 0.50)from banking").show
+
+
+df.groupBy("y").agg(avg($"age")).show
+
+
+df.groupBy("y").agg(count($"marital")).show
+df.groupBy("marital","y").count.show()
+
+
+df.groupBy("marital","y").agg(avg($"age")).show
+
+
+
+
+val df_age = df.withColumn("age_cat", when($"age" < 30 ,"young").otherwise( when($"age" > 60 , "old").otherwise("mid_age") ))
+
+df_age.show()
+
+df_age.groupBy("age_cat","y").count.show()
+df_age.groupBy("y","age_cat").count.show()
