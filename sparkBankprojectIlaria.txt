@@ -1,0 +1,208 @@
+ip-10-0-41-79 login: ilaria.taglialatelascafati_gma
+Password: 
+Last login: Thu Sep 10 14:25:36 on pts/613
+[ilaria.taglialatelascafati_gma@ip-10-0-41-79 ~]$ spark-shell --conf spark.ui.port=4140  --packages com.databricks:spark-csv_2.11:1.5.0
+Ivy Default Cache set to: /mnt/home/ilaria.taglialatelascafati_gma/.ivy2/cache
+The jars for the packages stored in: /mnt/home/ilaria.taglialatelascafati_gma/.ivy2/jars
+:: loading settings :: url = jar:file:/opt/cloudera/parcels/CDH-6.3.2-1.cdh6.3.2.p0.1605554/jars/ivy-2.4.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+com.databricks#spark-csv_2.11 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent-18f7ab59-a7ad-47df-8714-e8167264e4cb;1.0
+        confs: [default]
+        found com.databricks#spark-csv_2.11;1.5.0 in central
+        found org.apache.commons#commons-csv;1.1 in central
+        found com.univocity#univocity-parsers;1.5.1 in central
+:: resolution report :: resolve 511ms :: artifacts dl 24ms
+        :: modules in use:
+        com.databricks#spark-csv_2.11;1.5.0 from central in [default]
+        com.univocity#univocity-parsers;1.5.1 from central in [default]
+        org.apache.commons#commons-csv;1.1 from central in [default]
+        ---------------------------------------------------------------------
+        |                  |            modules            ||   artifacts   |
+        |       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+        ---------------------------------------------------------------------
+        |      default     |   3   |   0   |   0   |   0   ||   3   |   0   |
+        ---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent-18f7ab59-a7ad-47df-8714-e8167264e4cb
+        confs: [default]
+        0 artifacts copied, 3 already retrieved (0kB/14ms)
+Setting default log level to "ERROR".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+20/09/11 10:24:22 WARN lineage.LineageWriter: Lineage directory /var/log/spark/lineage doesn't exist or is not writable. Lineage for this application will be disabled.
+Spark context available as 'sc' (master = yarn, app id = application_1598850886563_1162).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 2.4.0-cdh6.3.2
+      /_/
+         
+Using Scala version 2.11.12 (Java HotSpot(TM) 64-Bit Server VM, Java 1.8.0_144)
+Type in expressions to have them evaluated.
+Type :help for more information.
+scala> 
+
+scala> val sqlContext = new org.apache.spark.sql.SQLContext(sc)
+warning: there was one deprecation warning; re-run with -deprecation for details
+sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@5aef36a9
+
+scala> val df = sqlContext.read.format("com.databricks.spark.csv").option("header","true").option("inferSchema","true").option("delimiter", "\t").load("/user/ilaria.taglialate
+lascafati_gma/bankProject.txt")
+20/09/11 10:24:44 WARN lineage.LineageWriter: Lineage directory /var/log/spark/lineage doesn't exist or is not writable. Lineage for this application will be disabled.
+df: org.apache.spark.sql.DataFrame = [age: int, job: string ... 15 more fields] 
+
+scala> df.show()
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+
+|age|         job| marital|education|default|balance|housing|loan|contact|day|month|duration|campaign|pdays|previous|poutcome|  y|
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+
+| 58|  management| married| tertiary|     no|   2143|    yes|  no|unknown|  5|  may|     261|       1|   -1|       0| unknown| no|
+| 44|  technician|  single|secondary|     no|     29|    yes|  no|unknown|  5|  may|     151|       1|   -1|       0| unknown| no|
+| 33|entrepreneur| married|secondary|     no|      2|    yes| yes|unknown|  5|  may|      76|       1|   -1|       0| unknown| no|
+| 47| blue-collar| married|  unknown|     no|   1506|    yes|  no|unknown|  5|  may|      92|       1|   -1|       0| unknown| no|
+| 33|     unknown|  single|  unknown|     no|      1|     no|  no|unknown|  5|  may|     198|       1|   -1|       0| unknown| no|
+| 35|  management| married| tertiary|     no|    231|    yes|  no|unknown|  5|  may|     139|       1|   -1|       0| unknown| no|
+| 28|  management|  single| tertiary|     no|    447|    yes| yes|unknown|  5|  may|     217|       1|   -1|       0| unknown| no|
+| 42|entrepreneur|divorced| tertiary|    yes|      2|    yes|  no|unknown|  5|  may|     380|       1|   -1|       0| unknown| no|
+| 58|     retired| married|  primary|     no|    121|    yes|  no|unknown|  5|  may|      50|       1|   -1|       0| unknown| no|
+| 43|  technician|  single|secondary|     no|    593|    yes|  no|unknown|  5|  may|      55|       1|   -1|       0| unknown| no|
+| 41|      admin.|divorced|secondary|     no|    270|    yes|  no|unknown|  5|  may|     222|       1|   -1|       0| unknown| no|
+| 29|      admin.|  single|secondary|     no|    390|    yes|  no|unknown|  5|  may|     137|       1|   -1|       0| unknown| no|
+| 53|  technician| married|secondary|     no|      6|    yes|  no|unknown|  5|  may|     517|       1|   -1|       0| unknown| no|
+| 58|  technician| married|  unknown|     no|     71|    yes|  no|unknown|  5|  may|      71|       1|   -1|       0| unknown| no|
+| 57|    services| married|secondary|     no|    162|    yes|  no|unknown|  5|  may|     174|       1|   -1|       0| unknown| no|
+| 51|     retired| married|  primary|     no|    229|    yes|  no|unknown|  5|  may|     353|       1|   -1|       0| unknown| no|
+| 45|      admin.|  single|  unknown|     no|     13|    yes|  no|unknown|  5|  may|      98|       1|   -1|       0| unknown| no|
+| 57| blue-collar| married|  primary|     no|     52|    yes|  no|unknown|  5|  may|      38|       1|   -1|       0| unknown| no|
+| 60|     retired| married|  primary|     no|     60|    yes|  no|unknown|  5|  may|     219|       1|   -1|       0| unknown| no|
+| 33|    services| married|secondary|     no|      0|    yes|  no|unknown|  5|  may|      54|       1|   -1|       0| unknown| no|
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+
+only showing top 20 rows
+
+scala> val tot_count = df.count().toDouble
+tot_count: Double = 45211.0
+
+scala> val success = df.filter($"y" ==="yes").count()
+success: Long = 5289
+
+scala> val marketing_success_rate = success/tot_count
+marketing_success_rate: Double = 0.11698480458295547
+
+scala> val failure = df.filter($"y" ==="no").count()
+failure: Long = 39922
+
+scala> val marketing_failure_rate = failure/tot_count
+marketing_failure_rate: Double = 0.8830151954170445
+
+scala> df.select(max($"age"), min($"age") , mean($"age")).show
++--------+--------+-----------------+
+|max(age)|min(age)|         avg(age)|
++--------+--------+-----------------+
+|      95|      18|40.93621021432837|
++--------+--------+-----------------+
+
+scala> df.registerTempTable("banking")
+warning: there was one deprecation warning; re-run with -deprecation for details
+
+scala> sqlContext.sql("select avg(balance), percentile(balance, 0.50)from banking").show
++------------------+--------------------------------------------+
+|      avg(balance)|percentile(balance, CAST(0.50 AS DOUBLE), 1)|
++------------------+--------------------------------------------+
+|1362.2720576850766|                                       448.0|
++------------------+--------------------------------------------+
+
+scala> df.groupBy("y").agg(avg($"age")).show
++---+------------------+                                                        
+|  y|          avg(age)|
++---+------------------+
+| no| 40.83898602274435|
+|yes|41.670069956513515|
++---+------------------+
+
+scala> df.groupBy("y").agg(count($"marital")).show
++---+--------------+
+|  y|count(marital)|
++---+--------------+
+| no|         39922|
+|yes|          5289|
++---+--------------+
+
+scala> df.groupBy("marital","y").count.show()
++--------+---+-----+
+| marital|  y|count|
++--------+---+-----+
+|divorced|yes|  622|
+|  single| no|10878|
+|  single|yes| 1912|
+|divorced| no| 4585|
+| married|yes| 2755|
+| married| no|24459|
++--------+---+-----+
+
+scala> df.groupBy("marital","y").agg(avg($"age")).show
++--------+---+------------------+
+| marital|  y|          avg(age)|
++--------+---+------------------+
+|divorced|yes|49.247588424437296|
+|  single| no| 33.96258503401361|
+|  single|yes| 32.22907949790795|
+|divorced| no| 45.31297709923664|
+| married|yes| 46.51143375680581|
+| married| no| 43.05854695613067|
++--------+---+------------------+
+
+scala> val df_age = df.withColumn("age_cat", when($"age" < 30 ,
+     | "young").otherwise( when($"age" > 60 , "old").otherwise("mid_age") ))
+df_age: org.apache.spark.sql.DataFrame = [age: int, job: string ... 16 more fields]
+
+scala> df_age.show()
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+-------+
+|age|         job| marital|education|default|balance|housing|loan|contact|day|month|duration|campaign|pdays|previous|poutcome|  y|age_cat|
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+-------+
+| 58|  management| married| tertiary|     no|   2143|    yes|  no|unknown|  5|  may|     261|       1|   -1|       0| unknown| no|mid_age|
+| 44|  technician|  single|secondary|     no|     29|    yes|  no|unknown|  5|  may|     151|       1|   -1|       0| unknown| no|mid_age|
+| 33|entrepreneur| married|secondary|     no|      2|    yes| yes|unknown|  5|  may|      76|       1|   -1|       0| unknown| no|mid_age|
+| 47| blue-collar| married|  unknown|     no|   1506|    yes|  no|unknown|  5|  may|      92|       1|   -1|       0| unknown| no|mid_age|
+| 33|     unknown|  single|  unknown|     no|      1|     no|  no|unknown|  5|  may|     198|       1|   -1|       0| unknown| no|mid_age|
+| 35|  management| married| tertiary|     no|    231|    yes|  no|unknown|  5|  may|     139|       1|   -1|       0| unknown| no|mid_age|
+| 28|  management|  single| tertiary|     no|    447|    yes| yes|unknown|  5|  may|     217|       1|   -1|       0| unknown| no|  young|
+| 42|entrepreneur|divorced| tertiary|    yes|      2|    yes|  no|unknown|  5|  may|     380|       1|   -1|       0| unknown| no|mid_age|
+| 58|     retired| married|  primary|     no|    121|    yes|  no|unknown|  5|  may|      50|       1|   -1|       0| unknown| no|mid_age|
+| 43|  technician|  single|secondary|     no|    593|    yes|  no|unknown|  5|  may|      55|       1|   -1|       0| unknown| no|mid_age|
+| 41|      admin.|divorced|secondary|     no|    270|    yes|  no|unknown|  5|  may|     222|       1|   -1|       0| unknown| no|mid_age|
+| 29|      admin.|  single|secondary|     no|    390|    yes|  no|unknown|  5|  may|     137|       1|   -1|       0| unknown| no|  young|
+| 53|  technician| married|secondary|     no|      6|    yes|  no|unknown|  5|  may|     517|       1|   -1|       0| unknown| no|mid_age|
+| 58|  technician| married|  unknown|     no|     71|    yes|  no|unknown|  5|  may|      71|       1|   -1|       0| unknown| no|mid_age|
+| 57|    services| married|secondary|     no|    162|    yes|  no|unknown|  5|  may|     174|       1|   -1|       0| unknown| no|mid_age|
+| 51|     retired| married|  primary|     no|    229|    yes|  no|unknown|  5|  may|     353|       1|   -1|       0| unknown| no|mid_age|
+| 45|      admin.|  single|  unknown|     no|     13|    yes|  no|unknown|  5|  may|      98|       1|   -1|       0| unknown| no|mid_age|
+| 57| blue-collar| married|  primary|     no|     52|    yes|  no|unknown|  5|  may|      38|       1|   -1|       0| unknown| no|mid_age|
+| 60|     retired| married|  primary|     no|     60|    yes|  no|unknown|  5|  may|     219|       1|   -1|       0| unknown| no|mid_age|
+| 33|    services| married|secondary|     no|      0|    yes|  no|unknown|  5|  may|      54|       1|   -1|       0| unknown| no|mid_age|
++---+------------+--------+---------+-------+-------+-------+----+-------+---+-----+--------+--------+-----+--------+--------+---+-------+
+only showing top 20 rows
+
+scala> df_age.groupBy("age_cat","y").count.show()
++-------+---+-----+
+|age_cat|  y|count|
++-------+---+-----+
+|mid_age| no|34891|
+|mid_age|yes| 3859|
+|  young| no| 4345|
+|    old|yes|  502|
+|    old| no|  686|
+|  young|yes|  928|
++-------+---+-----+
+
+scala> df_age.groupBy("y","age_cat").count.show()
++---+-------+-----+
+|  y|age_cat|count|
++---+-------+-----+
+| no|  young| 4345|
+| no|mid_age|34891|
+|yes|mid_age| 3859|
+|yes|  young|  928|
+|yes|    old|  502|
+| no|    old|  686|
++---+-------+-----+
+
+
