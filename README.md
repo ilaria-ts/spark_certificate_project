@@ -1,4 +1,4 @@
-# spark_certificate_project
+# spark_project
 
 Project carried out for the 'spark developer' certificate
 
